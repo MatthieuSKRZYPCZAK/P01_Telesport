@@ -1,0 +1,22 @@
+<ngx-charts-pie-chart
+  [view]="view"
+  [results]="olympicData"
+  [labels]="true"
+  [trimLabels]="trimLabels"
+  (select)="onCountrySelect($event)"
+>
+  <ng-template #tooltipTemplate let-model="model">
+    <div class="chart-tooltip">
+      <div class="chart-tooltip-content">
+        <div class="chart-tooltip-title">
+          <span>{{ model.name }}</span>
+        </div>
+        <div class="chart-tooltip-value">
+          <span><i class="fas fa-award"></i> {{ model.value }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ngx-charts-pie-chart>
+
+

@@ -1,1 +1,82 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+  font-weight: normal;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  padding: 20px;
+
+  &-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    .container-title {
+      background-color: #008080;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1.5rem;
+    }
+  }
+
+  &-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+
+    .info-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #008080;
+      border-radius: 8px;
+      width: auto;
+
+      .info-label {
+        font-size: large;
+        color: #666;
+        white-space: nowrap;
+        @media (max-width: 768px){
+          white-space: normal;
+        }
+      }
+
+      .info-value {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  }
+
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  .pie-label {
+    font-size: large;
+    @media (max-width: 768px){
+      font-size: small;
+    }
+  }
+}

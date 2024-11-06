@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="container-header">
+    <h2 class="container-title">{{ countryName }}</h2>
+  </div>
+  <div class="container-info">
+    <div class="info-box">
+      <span class="info-label">Number of entries</span>
+      <span class="info-value">{{ numberOfEntries }}</span>
+    </div>
+    <div class="info-box">
+      <span class="info-label">Total number medals</span>
+      <span class="info-value">{{ totalMedals }}</span>
+    </div>
+    <div class="info-box">
+      <span class="info-label">Total number of athletes</span>
+      <span class="info-value">{{ totalAthletes }}</span>
+    </div>
+  </div>
+  <div class="chart-container">
+    <app-country-line-chart/>
+  </div>
+</div>
