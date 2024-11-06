@@ -1,0 +1,15 @@
+ngx-tooltip-content.ngx-charts-tooltip-content.type-tooltip {
+  background-color: #008080;
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.chart-tooltip {
+  padding: 8px;
+  font-size: 1rem;
+
+  &-title {
+    margin-bottom: 5px;
+  }
+}
+
+
