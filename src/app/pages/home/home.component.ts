@@ -30,8 +30,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.errorMessage = params['error'] || null;
     })
     this.olympics$ = this.olympicService.getOlympics().pipe(
-      catchError((error: HttpErrorResponse) => {
-        this.errorMessage = "Error loading data. Please try again later.";
+      catchError((error) => {
+        this.errorMessage = error instanceof HttpErrorResponse
+        ? "Error loading data. Please try again later."
+        : "An unexpected error occurred. Please try again later.";
         return of([]);
       })
     );

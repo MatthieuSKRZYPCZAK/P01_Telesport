@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
-import {LineChartModule, NgxChartsModule, PieChartModule} from "@swimlane/ngx-charts";
+import { NgxChartsModule } from "@swimlane/ngx-charts";
 import {OlympicService} from "../../core/services/olympic.service";
 import {ActivatedRoute} from "@angular/router";
 import {Olympic} from "../../core/models/Olympic";
@@ -39,7 +39,6 @@ export class CountryLineChartComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    const target = event.target as Window;
     this.updateChartSize();
   }
 
