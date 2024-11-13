@@ -38,7 +38,7 @@ export class CountryLineChartComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  onResize() {
     this.updateChartSize();
   }
 
