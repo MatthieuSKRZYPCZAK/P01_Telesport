@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {LineChartModule, PieChartModule} from "@swimlane/ngx-charts";
 import {OlympicService} from "../../core/services/olympic.service";
 import {ActivatedRoute} from "@angular/router";
@@ -35,6 +35,18 @@ export class CountryLineChartComponent implements OnInit {
       this.countryName = params.get('name') || '';
       this.loadCountryData();
     })
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    const target = event.target as Window;
+    this.updateChartSize();
+  }
+
+  updateChartSize() {
+    const width = Math.min(window.innerWidth, 768);
+    const height = window.innerHeight * 0.4;
+    this.view = [width, height];
   }
 
   loadCountryData(): void {
