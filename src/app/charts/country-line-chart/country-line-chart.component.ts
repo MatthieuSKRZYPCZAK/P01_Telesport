@@ -4,6 +4,7 @@ import {OlympicService} from "../../core/services/olympic.service";
 import {ActivatedRoute} from "@angular/router";
 import {Olympic} from "../../core/models/Olympic";
 
+
 @Component({
   selector: 'app-country-line-chart',
   standalone: true,
@@ -16,11 +17,12 @@ import {Olympic} from "../../core/models/Olympic";
 })
 export class CountryLineChartComponent implements OnInit {
   view: [number, number] = [700, 400];
-  countryData: any;
+  countryData: { name: string, series: { name: string, value: number }[] }[] = [];
   totalEntries: number = 0;
   totalMedals: number = 0;
   totalAthletes: number = 0;
   countryName: string = '';
+  xAxisLabel: string = 'Dates';
 
   constructor(
     private olympicService: OlympicService,
