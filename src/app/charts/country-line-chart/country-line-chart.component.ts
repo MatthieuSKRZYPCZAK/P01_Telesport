@@ -1,5 +1,5 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {LineChartModule, PieChartModule} from "@swimlane/ngx-charts";
+import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
+import {LineChartModule, NgxChartsModule, PieChartModule} from "@swimlane/ngx-charts";
 import {OlympicService} from "../../core/services/olympic.service";
 import {ActivatedRoute} from "@angular/router";
 import {Olympic} from "../../core/models/Olympic";
@@ -9,11 +9,11 @@ import {Olympic} from "../../core/models/Olympic";
   selector: 'app-country-line-chart',
   standalone: true,
   imports: [
-    PieChartModule,
-    LineChartModule
+    NgxChartsModule
   ],
   templateUrl: './country-line-chart.component.html',
-  styleUrl: './country-line-chart.component.scss'
+  styleUrl: './country-line-chart.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class CountryLineChartComponent implements OnInit {
   view: [number, number] = [700, 400];
