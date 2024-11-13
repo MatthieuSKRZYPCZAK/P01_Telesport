@@ -50,6 +50,8 @@ export class CountryComponent implements OnInit, OnDestroy {
         this.totalAthletes = this.countryData.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
         this.totalMedals = this.countryData.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
         this.numberOfEntries = this.countryData.participations.length;
+      } else {
+        this.router.navigate([''], { queryParams: { error: 'Country not found'}});
       }
     });
   }
