@@ -53,13 +53,10 @@ export class MedalsPieChartComponent implements OnInit {
   }
 
   updateChartSize(width: number) {
-    if (width < 600) {
+    if (width < 768) {
       this.view = [300, 200]; // Taille pour les petits écrans
       this.trimLabels = true;
-    } else if (width < 1024) {
-      this.view = [500, 300]; // Taille pour les tablettes
-      this.trimLabels = false;
-    } else {
+    }else {
       this.view = [700, 400]; // Taille pour les écrans de bureau
       this.trimLabels = false;
     }

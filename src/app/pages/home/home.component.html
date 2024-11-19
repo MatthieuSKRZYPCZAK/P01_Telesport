@@ -6,18 +6,26 @@
   <div class="container-header">
     <h2 class="container-title">Medals per Country</h2>
   </div>
-  <div class="container-info">
-    <div class="info-box">
-      <span class="info-label">Number of JOs</span>
-      <span class="info-value">{{ totalJOs }}</span>
-    </div>
-    <div class="info-box">
-      <span class="info-label">Number of countries</span>
-      <span class="info-value">{{ totalCountries }}</span>
-    </div>
-  </div>
-  <div class="chart-container">
-    <app-medals-pie-chart/>
+  <div *ngIf="totalCountries === 0; else dataContent" class="error-message">
+    {{ 'No data found' }}
   </div>
 
+  <ng-template #dataContent>
+    <div class="container-info">
+      <div class="info-box">
+        <span class="info-label">Number of JOs</span>
+        <span class="info-value">{{ totalJOs }}</span>
+      </div>
+      <div class="info-box">
+        <span class="info-label">Number of countries</span>
+        <span class="info-value">{{ totalCountries }}</span>
+      </div>
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    <div class="chart-container">
+      <app-medals-pie-chart/>
+    </div>
+  </ng-template>
 </div>

@@ -1,22 +1,24 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Olympic} from "../../core/models/Olympic";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {OlympicService} from "../../core/services/olympic.service";
 import {MedalsPieChartComponent} from "../../charts/medals-pie-chart/medals-pie-chart.component";
 import {CountryLineChartComponent} from "../../charts/country-line-chart/country-line-chart.component";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
+
 
 @Component({
   selector: 'app-country',
   standalone: true,
   imports: [
     MedalsPieChartComponent,
-    CountryLineChartComponent
+    CountryLineChartComponent,
+    RouterLink
   ],
   templateUrl: './country.component.html',
   styleUrl: './country.component.scss'
 })
-export class CountryComponent implements OnInit {
+export class CountryComponent implements OnInit, OnDestroy {
 
   public olympics$: Observable<Olympic[]> = of([]);
   countryName: string = '';
@@ -24,10 +26,12 @@ export class CountryComponent implements OnInit {
   protected totalMedals: number = 0;
   protected totalAthletes: number = 0;
   protected numberOfEntries: number = 0;
+  private subscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
-    private olympicService: OlympicService
+    private olympicService: OlympicService,
+    private router: Router
   ) {
   }
 
@@ -40,14 +44,24 @@ export class CountryComponent implements OnInit {
 
   fetchCountryData(): void {
     this.olympics$ = this.olympicService.getOlympics();
-    this.olympics$.subscribe(countries => {
+    this.subscription = this.olympics$.subscribe(countries => {
       this.countryData = countries.find(country => country.country.toLowerCase() === this.countryName.toLowerCase());
       if (this.countryData) {
         this.totalAthletes = this.countryData.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
         this.totalMedals = this.countryData.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
         this.numberOfEntries = this.countryData.participations.length;
+      } else {
+        this.router.navigate([''], { queryParams: { error: 'Country not found'}});
       }
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+
+  goBack() {
+    this.router.navigate(['']);
+  }
 }

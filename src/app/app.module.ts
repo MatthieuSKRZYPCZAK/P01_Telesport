@@ -7,6 +7,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {MedalsPieChartComponent} from "./charts/medals-pie-chart/medals-pie-chart.component";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {MedalsPieChartComponent} from "./charts/medals-pie-chart/medals-pie-char
     BrowserModule,
     AppRoutingModule,
     NgxChartsModule,
-    MedalsPieChartComponent
+    MedalsPieChartComponent,
+    BrowserAnimationsModule
   ],
   providers: [
     provideHttpClient()

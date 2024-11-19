@@ -1,29 +1,42 @@
-# OlympicGamesStarter
+# Olympic Games
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.3.
+This project is an Angular-based web application developed for TéléSport to enhance their coverage of the Olympic Games with interactive features. 
+The application provides a dashboard for visualizing past Olympic data and a detail page for specific country insights.
 
-Don't forget to install your node_modules before starting (`npm install`).
+## Prerequisites
 
-## Development server
+Before starting, ensure you have the following installed:
+- Node.js (version 14+ recommended)
+- Angular CLI (v18.0.3 or later)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Getting Started
+
+1. Clone repository:  `git clone https://github.com/MatthieuSKRZYPCZAK/P01_Telesport.git`
+2. Navigate to the project directory: `cd P01_Telesport`
+3. Install dependencies: `npm install`
+4. Start the Development server: `ng serve`
+
+The app will be accessible at http://localhost:4200. 
 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Where to start
+## Features
 
-As you can see, an architecture has already been defined for the project. It is just a suggestion, you can choose to use your own. The predefined architecture includes (in addition to the default angular architecture) the following:
+- Interactive Dashboard: Displays a pie chart of medals by country.
+- Country Detail Page: Displays a line chart of medals won over the years and other country specific details.
+- Responsive Design: Fully functional on both mobile and desktop devices.
 
-- `components` folder: contains every reusable components
-- `pages` folder: contains components used for routing
-- `core` folder: contains the business logic (`services` and `models` folders)
+## Charts Library
 
-I suggest you to start by understanding this starter code. Pay an extra attention to the `app-routing.module.ts` and the `olympic.service.ts`.
+This project uses the @swimlane/ngx-charts library (version 20.5.0) for rendering dynamic and interactive charts.
 
-Once mastered, you should continue by creating the typescript interfaces inside the `models` folder. As you can see I already created two files corresponding to the data included inside the `olympic.json`. With your interfaces, improve the code by replacing every `any` by the corresponding interface.
+### Key Features:
+- Used for creating the pie chart on the dashboard page (medals by country).
+- Used for creating the line chart on the detail page (medals over time for a specific country).
 
-You're now ready to implement the requested features.
+Visit the official [ngx-charts documentation](https://swimlane.gitbook.io/ngx-charts).
 
-Good luck!
+
+
