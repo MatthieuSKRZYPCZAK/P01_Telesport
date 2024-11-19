@@ -18,9 +18,7 @@ import {Olympic} from "../../core/models/Olympic";
 export class CountryLineChartComponent implements OnInit {
   view: [number, number] = [700, 400];
   countryData: { name: string, series: { name: string, value: number }[] }[] = [];
-  totalEntries: number = 0;
   totalMedals: number = 0;
-  totalAthletes: number = 0;
   countryName: string = '';
   xAxisLabel: string = 'Dates';
 
@@ -53,7 +51,6 @@ export class CountryLineChartComponent implements OnInit {
       const country = countries.find(c => c.country === this.countryName);
 
       if (country) {
-        // Prépare les données pour le graphique
         this.countryData = [
           {
             name: 'Medals',
@@ -62,19 +59,8 @@ export class CountryLineChartComponent implements OnInit {
               value: p.medalsCount
             }))
           },
-          {
-            name: 'Athletes',
-            series: country.participations.map(p => ({
-              name: p.year.toString(),
-              value: p.athleteCount
-            }))
-          }
         ];
-
-        // Calcul des statistiques
-        this.totalEntries = country.participations.length;
         this.totalMedals = country.participations.reduce((sum, p) => sum + p.medalsCount, 0);
-        this.totalAthletes = country.participations.reduce((sum, p) => sum + p.athleteCount, 0);
       }
     });
   }
