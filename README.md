@@ -11,8 +11,8 @@ Before starting, ensure you have the following installed:
 
 ## Getting Started
 
-1. Clone repository:  `git clone https://github.com/MatthieuSKRZYPCZAK/P01_Telesport.git`
-2. Navigate to the project directory: `cd P01_Telesport`
+1. Clone repository:  `git clone https://github.com/MatthieuSKRZYPCZAK/P02_Telesport.git`
+2. Navigate to the project directory: `cd P02_Telesport`
 3. Install dependencies: `npm install`
 4. Start the Development server: `ng serve`
 
