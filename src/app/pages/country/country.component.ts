@@ -16,7 +16,7 @@ import {Observable, of, Subscription} from "rxjs";
     RouterLink
   ],
   templateUrl: './country.component.html',
-  styleUrl: './country.component.scss'
+  styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit, OnDestroy {
 
@@ -57,7 +57,9 @@ export class CountryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 
