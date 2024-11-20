@@ -1,8 +1,9 @@
-import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import {OlympicService} from "../../core/services/olympic.service";
 import {ActivatedRoute} from "@angular/router";
 import {Olympic} from "../../core/models/Olympic";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -15,12 +16,13 @@ import {Olympic} from "../../core/models/Olympic";
   styleUrl: './country-line-chart.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class CountryLineChartComponent implements OnInit {
+export class CountryLineChartComponent implements OnInit, OnDestroy {
   view: [number, number] = [700, 400];
   countryData: { name: string, series: { name: string, value: number }[] }[] = [];
   totalMedals: number = 0;
   countryName: string = '';
   xAxisLabel: string = 'Dates';
+  private subscription!: Subscription;
 
   constructor(
     private olympicService: OlympicService,
@@ -29,7 +31,7 @@ export class CountryLineChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.subscription = this.route.paramMap.subscribe(params => {
       this.countryName = params.get('name') || '';
       this.loadCountryData();
     })
@@ -47,7 +49,7 @@ export class CountryLineChartComponent implements OnInit {
   }
 
   loadCountryData(): void {
-    this.olympicService.getOlympics().subscribe((countries: Olympic[]) => {
+    const dataSubscription = this.olympicService.getOlympics().subscribe((countries: Olympic[]) => {
       const country = countries.find(c => c.country === this.countryName);
 
       if (country) {
@@ -63,5 +65,13 @@ export class CountryLineChartComponent implements OnInit {
         this.totalMedals = country.participations.reduce((sum, p) => sum + p.medalsCount, 0);
       }
     });
+
+    this.subscription.add(dataSubscription);
+  }
+
+  ngOnDestroy(): void {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

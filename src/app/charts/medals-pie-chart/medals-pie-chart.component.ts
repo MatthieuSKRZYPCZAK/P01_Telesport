@@ -1,8 +1,9 @@
-import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {OlympicService} from "../../core/services/olympic.service";
 import {Olympic} from "../../core/models/Olympic";
 import {Router} from "@angular/router";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -15,11 +16,12 @@ import {Router} from "@angular/router";
   styleUrl: './medals-pie-chart.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class MedalsPieChartComponent implements OnInit {
+export class MedalsPieChartComponent implements OnInit, OnDestroy {
 
   view: [number, number] = [800, 400];
   olympicData: { name: string, value: number }[] = [];
   trimLabels: boolean = false;
+  private subscription!: Subscription;
 
   constructor(
     private olympicService: OlympicService,
@@ -29,9 +31,9 @@ export class MedalsPieChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateChartSize(window.innerWidth);
-    this.olympicService.loadInitialData().subscribe();
+    this.subscription = this.olympicService.loadInitialData().subscribe();
 
-    this.olympicService.getOlympics().subscribe({
+    this.subscription.add(this.olympicService.getOlympics().subscribe({
       next: (data: Olympic[]) => {
         this.olympicData = data.map(country => {
           const totalMedals = country.participations.reduce(
@@ -43,7 +45,7 @@ export class MedalsPieChartComponent implements OnInit {
           };
         });
       }
-    });
+    }));
   }
 
   @HostListener('window:resize', ['$event'])
@@ -65,5 +67,11 @@ export class MedalsPieChartComponent implements OnInit {
   onCountrySelect(event: { name: string }): void {
     const countryName = event.name;
     this.router.navigate(['/country', countryName]);
+  }
+
+  ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
