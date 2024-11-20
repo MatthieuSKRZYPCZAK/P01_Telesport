@@ -31,10 +31,6 @@ export class MedalsPieChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateChartSize(window.innerWidth);
-    this.olympicService.loadInitialData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
-
     this.olympicService.getOlympics()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
