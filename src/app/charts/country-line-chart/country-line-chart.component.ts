@@ -3,7 +3,7 @@ import { NgxChartsModule } from "@swimlane/ngx-charts";
 import {OlympicService} from "../../core/services/olympic.service";
 import {ActivatedRoute} from "@angular/router";
 import {Olympic} from "../../core/models/Olympic";
-import {Subscription} from "rxjs";
+import {Subject, takeUntil} from "rxjs";
 
 
 @Component({
@@ -22,7 +22,7 @@ export class CountryLineChartComponent implements OnInit, OnDestroy {
   totalMedals: number = 0;
   countryName: string = '';
   xAxisLabel: string = 'Dates';
-  private subscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private olympicService: OlympicService,
@@ -31,10 +31,12 @@ export class CountryLineChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription = this.route.paramMap.subscribe(params => {
-      this.countryName = params.get('name') || '';
-      this.loadCountryData();
-    })
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        this.countryName = params.get('name') || '';
+        this.loadCountryData();
+    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -43,14 +45,17 @@ export class CountryLineChartComponent implements OnInit, OnDestroy {
   }
 
   updateChartSize() {
-    const width = Math.min(window.innerWidth, 768);
+    const isSmallScreen = window.innerWidth < 768;
+    const width = isSmallScreen ? Math.max(window.innerWidth * 0.9, 300) : Math.min(window.innerWidth * 0.8, 700);
     const height = window.innerHeight * 0.4;
     this.view = [width, height];
   }
 
   loadCountryData(): void {
-    const dataSubscription = this.olympicService.getOlympics().subscribe((countries: Olympic[]) => {
-      const country = countries.find(c => c.country === this.countryName);
+    this.olympicService.getOlympics()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((countries: Olympic[]) => {
+        const country = countries.find(c => c.country === this.countryName);
 
       if (country) {
         this.countryData = [
@@ -65,13 +70,11 @@ export class CountryLineChartComponent implements OnInit, OnDestroy {
         this.totalMedals = country.participations.reduce((sum, p) => sum + p.medalsCount, 0);
       }
     });
-
-    this.subscription.add(dataSubscription);
   }
 
-  ngOnDestroy(): void {
-    if(this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
+
 }
