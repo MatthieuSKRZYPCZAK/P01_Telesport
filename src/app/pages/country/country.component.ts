@@ -5,6 +5,9 @@ import {OlympicService} from "../../core/services/olympic.service";
 import {MedalsPieChartComponent} from "../../charts/medals-pie-chart/medals-pie-chart.component";
 import {CountryLineChartComponent} from "../../charts/country-line-chart/country-line-chart.component";
 import {Subject, take, takeUntil} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {LoaderComponent} from "../../ui/loader/loader.component";
+import {NgIf} from "@angular/common";
 
 
 @Component({
@@ -13,7 +16,9 @@ import {Subject, take, takeUntil} from "rxjs";
   imports: [
     MedalsPieChartComponent,
     CountryLineChartComponent,
-    RouterLink
+    RouterLink,
+    LoaderComponent,
+    NgIf
   ],
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss']
@@ -22,10 +27,11 @@ export class CountryComponent implements OnInit, OnDestroy {
 
   countryName: string = '';
   countryData: Olympic | undefined;
-  protected totalMedals: number = 0;
-  protected totalAthletes: number = 0;
-  protected numberOfEntries: number = 0;
+  public totalMedals: number = 0;
+  public totalAthletes: number = 0;
+  public numberOfEntries: number = 0;
   private destroy$ = new Subject<void>();
+  public isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,31 +41,61 @@ export class CountryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.olympicService.loadInitialData()
+    this.route.paramMap
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.route.paramMap
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(params => {
-            this.countryName = params.get('name') || '';
-            this.fetchCountryData();
-          });
+      .subscribe(params => {
+        this.countryName = params.get("name") || '';
+        this.fetchCountryData();
       });
   }
 
   fetchCountryData(): void {
+    this.isLoading = true;
     this.olympicService.getOlympics()
       .pipe(take(1))
       .subscribe(countries => {
-        this.countryData = countries.find(country => country.country.toLowerCase() === this.countryName.toLowerCase());
-          if (this.countryData) {
-            this.totalAthletes = this.countryData.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
-            this.totalMedals = this.countryData.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
-            this.numberOfEntries = this.countryData.participations.length;
-          } else {
-            this.router.navigate([''], { queryParams: { error: 'Country not found'}});
-          }
+        if(countries.length === 0) {
+          this.olympicService.loadInitialData()
+            .pipe(takeUntil(this.destroy$),
+            catchError((error) => {
+              this.router.navigate([''], { queryParams: { error: 'Error loading data' } });
+              this.isLoading = false;
+              return [];
+            }))
+            .subscribe(() => {
+              this.searchCountryData();
+            });
+        } else {
+          this.searchCountryData(countries);
+        }
+
       });
+  }
+
+  private searchCountryData(countries?: Olympic[]) {
+    this.isLoading = false;
+    if(!countries) {
+      countries = this.olympicService.getOlympicValue();
+    }
+
+    this.countryData = countries.find(
+      country => country.country.toLowerCase() === this.countryName.toLowerCase()
+    );
+    if(this.countryData) {
+      this.calculateTotals(this.countryData);
+    } else {
+      this.router.navigate([''], { queryParams: { error: 'Country not found'} });
+    }
+  }
+
+  private calculateTotals(country: Olympic) {
+    this.totalAthletes = country.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
+    this.totalMedals = country.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);
+    this.numberOfEntries = country.participations.length;
+  }
+
+  goBack() {
+    this.router.navigate(['']);
   }
 
   ngOnDestroy() {
@@ -67,7 +103,4 @@ export class CountryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  goBack() {
-    this.router.navigate(['']);
-  }
 }

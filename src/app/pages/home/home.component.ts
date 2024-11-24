@@ -10,11 +10,13 @@ import {catchError} from "rxjs/operators";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
+
 export class HomeComponent implements OnInit, OnDestroy {
   protected totalJOs: number = 0;
   protected totalCountries: number = 0;
   private destroy$ = new Subject<void>();
   public errorMessage: string | null = null;
+  public isLoading: boolean = false;
 
   constructor(
     private olympicService: OlympicService,
@@ -27,11 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadOlympicsData();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   private listenToQueryParams() {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
@@ -41,23 +38,32 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private loadOlympicsData() {
+    this.isLoading = true;
     this.olympicService.loadInitialData()
       .pipe(
         catchError(error => {
           this.errorMessage = "Error loading data.";
-          console.error(error);
+          this.isLoading = false;
           return [];
         }),
         takeUntil(this.destroy$)
       )
       .subscribe((countries: Olympic[]) => {
+        this.isLoading = false;
         if (countries && countries.length > 0) {
           this.totalCountries = countries.length;
           this.totalJOs = countries.reduce(
             (sum: number, country) => sum + country.participations.length,
             0
           );
+        } else {
+          this.errorMessage = 'No data found';
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
