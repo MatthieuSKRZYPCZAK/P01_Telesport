@@ -1,13 +1,12 @@
-<!--<h2>Medals per Country</h2>-->
-<!--<hr />-->
-<!--<p>{{ (olympics$ | async)?.length }} data loaded</p>-->
-
 <div class="container">
   <div class="container-header">
     <h2 class="container-title">Medals per Country</h2>
   </div>
+
+  <app-loader [isLoading]="isLoading"></app-loader>
+
   <div *ngIf="totalCountries === 0; else dataContent" class="error-message">
-    {{ 'No data found' }}
+    {{ errorMessage }}
   </div>
 
   <ng-template #dataContent>
