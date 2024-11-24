@@ -2,11 +2,21 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subject, takeUntil} from 'rxjs';
 import {OlympicService} from 'src/app/core/services/olympic.service';
 import {Olympic} from "../../core/models/Olympic";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {catchError} from "rxjs/operators";
+import {LoaderComponent} from "../../ui/loader/loader.component";
+import {NgIf} from "@angular/common";
+import {MedalsPieChartComponent} from "../../charts/medals-pie-chart/medals-pie-chart.component";
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [
+    RouterLink,
+    MedalsPieChartComponent,
+    LoaderComponent,
+    NgIf
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
