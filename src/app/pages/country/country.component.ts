@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Olympic} from "../../core/models/Olympic";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {OlympicService} from "../../core/services/olympic.service";
-import {MedalsPieChartComponent} from "../../charts/medals-pie-chart/medals-pie-chart.component";
 import {CountryLineChartComponent} from "../../charts/country-line-chart/country-line-chart.component";
 import {Subject, take, takeUntil} from "rxjs";
 import {catchError} from "rxjs/operators";
@@ -14,7 +13,6 @@ import {NgIf} from "@angular/common";
   selector: 'app-country',
   standalone: true,
   imports: [
-    MedalsPieChartComponent,
     CountryLineChartComponent,
     RouterLink,
     LoaderComponent,
