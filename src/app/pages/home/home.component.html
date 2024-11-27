@@ -5,11 +5,11 @@
 
   <app-loader [isLoading]="isLoading"></app-loader>
 
-  <div *ngIf="totalCountries === 0; else dataContent" class="error-message">
-    {{ errorMessage }}
-  </div>
-
-  <ng-template #dataContent>
+  @if (totalCountries ===0) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  } @else {
     <div class="container-info">
       <div class="info-box">
         <span class="info-label">Number of JOs</span>
@@ -20,11 +20,15 @@
         <span class="info-value">{{ totalCountries }}</span>
       </div>
     </div>
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
     <div class="chart-container">
       <app-medals-pie-chart/>
     </div>
-  </ng-template>
+  }
 </div>

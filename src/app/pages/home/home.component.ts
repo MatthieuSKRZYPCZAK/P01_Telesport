@@ -5,7 +5,6 @@ import {Olympic} from "../../core/models/Olympic";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {catchError} from "rxjs/operators";
 import {LoaderComponent} from "../../ui/loader/loader.component";
-import {NgIf} from "@angular/common";
 import {MedalsPieChartComponent} from "../../charts/medals-pie-chart/medals-pie-chart.component";
 
 @Component({
@@ -14,8 +13,7 @@ import {MedalsPieChartComponent} from "../../charts/medals-pie-chart/medals-pie-
   imports: [
     RouterLink,
     MedalsPieChartComponent,
-    LoaderComponent,
-    NgIf
+    LoaderComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']

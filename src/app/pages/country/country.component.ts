@@ -6,7 +6,7 @@ import {CountryLineChartComponent} from "../../charts/country-line-chart/country
 import {Subject, take, takeUntil} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {LoaderComponent} from "../../ui/loader/loader.component";
-import {NgIf} from "@angular/common";
+
 
 
 @Component({
@@ -15,8 +15,7 @@ import {NgIf} from "@angular/common";
   imports: [
     CountryLineChartComponent,
     RouterLink,
-    LoaderComponent,
-    NgIf
+    LoaderComponent
   ],
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.scss']
