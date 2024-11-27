@@ -48,22 +48,40 @@ export class MedalsPieChartComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Host listener for the window `resize` event.
+   * Updates the chart size when the window width changes.
+   *
+   * @param event The resize event containing the new window dimensions.
+   */
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const target = event.target as Window;
     this.updateChartSize(target.innerWidth);
   }
 
+
+  /**
+   * Updates the chart size and adjusts label trimming based on the window width.
+   *
+   * @param width The current window width.
+   */
   updateChartSize(width: number) {
     if (width < 768) {
-      this.view = [300, 200]; // Taille pour les petits écrans
+      this.view = [300, 200];
       this.trimLabels = true;
     }else {
-      this.view = [700, 400]; // Taille pour les écrans de bureau
+      this.view = [700, 400];
       this.trimLabels = false;
     }
   }
 
+  /**
+   * Handles selection of a country in the chart.
+   * Navigates to the details page for the selected country.
+   *
+   * @param event The selection event containing the `name` of the selected country.
+   */
   onCountrySelect(event: { name: string }): void {
     const countryName = event.name;
     this.router.navigate(['/country', countryName]);

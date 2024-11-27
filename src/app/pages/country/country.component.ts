@@ -46,6 +46,10 @@ export class CountryComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Fetches Olympic data for the selected country.
+   * If no data is available, it triggers the initial data load process.
+   */
   fetchCountryData(): void {
     this.isLoading = true;
     this.olympicService.getOlympics()
@@ -69,6 +73,12 @@ export class CountryComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Searches for data for the selected country.
+   * If the country is not found, navigates back with an error message.
+   * @param countries (optional) The list of Olympic data.
+   * @private
+   */
   private searchCountryData(countries?: Olympic[]) {
     this.isLoading = false;
     if(!countries) {
@@ -85,6 +95,11 @@ export class CountryComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Calculates totals for athletes, medals, and entries for the selected country.
+   *
+   * @param country The `Olympic` object for the selected country.
+   */
   private calculateTotals(country: Olympic) {
     this.totalAthletes = country.participations.reduce((sum, participation) => sum + participation.athleteCount, 0);
     this.totalMedals = country.participations.reduce((sum, participation) => sum + participation.medalsCount, 0);

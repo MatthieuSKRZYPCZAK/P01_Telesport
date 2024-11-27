@@ -39,11 +39,19 @@ export class CountryLineChartComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Host listener for the `resize` event on the window.
+   * Updates the chart size dynamically when the window is resized.
+   */
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.updateChartSize();
   }
 
+  /**
+   * Updates the dimensions of the chart based on the window size.
+   * The chart adapts to smaller screens with reduced width and height.
+   */
   updateChartSize() {
     const isSmallScreen = window.innerWidth < 768;
     const width = isSmallScreen ? Math.max(window.innerWidth * 0.9, 300) : Math.min(window.innerWidth * 0.8, 700);
@@ -51,6 +59,11 @@ export class CountryLineChartComponent implements OnInit, OnDestroy {
     this.view = [width, height];
   }
 
+  /**
+   * Loads the Olympic data for the selected country.
+   * Processes the data to populate the chart with the number of medals won each year
+   * and calculates the total medals.
+   */
   loadCountryData(): void {
     this.olympicService.getOlympics()
       .pipe(takeUntil(this.destroy$))

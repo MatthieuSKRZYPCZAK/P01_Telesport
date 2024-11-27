@@ -37,6 +37,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadOlympicsData();
   }
 
+  /**
+   * Listens to query parameters for potential error messages.
+   * Updates the errorMessage property if an error parameter is found.
+   */
   private listenToQueryParams() {
     this.route.queryParams
       .pipe(takeUntil(this.destroy$))
@@ -45,6 +49,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Loads Olympic data using the `OlympicService`.
+   * Calculates and updates the total number of countries and Olympic Games.
+   */
   private loadOlympicsData() {
     this.isLoading = true;
     this.olympicService.loadInitialData()

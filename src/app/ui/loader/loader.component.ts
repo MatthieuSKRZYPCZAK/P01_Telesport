@@ -1,6 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {NgIf} from "@angular/common";
 
+/**
+ * LoaderComponent displays a loading indicator
+ * with an optional message.
+ */
 @Component({
   selector: 'app-loader',
   standalone: true,
